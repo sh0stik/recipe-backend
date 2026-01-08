@@ -1,0 +1,37 @@
+type Query {
+    recipes: [Recipe]!
+    recipe(id: ID!): Recipe
+    # NEW: Ability to search the global ingredient database
+    allIngredients: [Ingredient]!
+}
+
+type Mutation {
+    createRecipe(name: String!, description: String): Recipe!
+    # NEW: Create a global ingredient (e.g. "Flour")
+    createIngredient(name: String!): Ingredient!
+    # Updated: Link an existing Ingredient ID to a Recipe with an amount
+    addIngredientToRecipe(recipeId: ID!, ingredientId: ID!, amount: String!): Recipe!
+}
+
+type Recipe {
+    id: ID!
+    name: String!
+    description: String
+    isPublic: Boolean
+    # Returns the list of ingredients WITH amounts
+    ingredients: [RecipeIngredient]
+}
+
+# This is the usage in a specific recipe
+type RecipeIngredient {
+    id: ID!
+    amount: String!
+    # The actual ingredient reference
+    ingredient: Ingredient!
+}
+
+# This is the global reference item
+type Ingredient {
+    id: ID!
+    name: String!
+}
