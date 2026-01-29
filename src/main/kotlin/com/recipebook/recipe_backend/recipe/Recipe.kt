@@ -1,6 +1,7 @@
 package com.recipebook.recipe_backend.recipe
 
-import com.recipebook.recipe_backend.ingredient.Ingredient
+import com.recipebook.recipe_backend.category.Category
+import com.recipebook.recipe_backend.user.User
 import jakarta.persistence.*
 import java.util.UUID
 
@@ -18,6 +19,18 @@ data class Recipe(
 
     val isPublic: Boolean = false,
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    val user: User,
+
     @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
-    val ingredients: MutableList<RecipeIngredient> = mutableListOf()
+    val ingredients: MutableList<RecipeIngredient> = mutableListOf(),
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "recipe_categories", // Matches your diagram table name
+        joinColumns = [JoinColumn(name = "recipe_id")],
+        inverseJoinColumns = [JoinColumn(name = "category_id")]
+    )
+    val categories: MutableList<Category> = mutableListOf()
 )

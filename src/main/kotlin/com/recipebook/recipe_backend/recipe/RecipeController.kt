@@ -1,6 +1,7 @@
 package com.recipebook.recipe_backend.recipe
 
 import com.recipebook.recipe_backend.ingredient.IngredientRepository
+import com.recipebook.recipe_backend.user.UserRepository
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.MutationMapping
 import org.springframework.graphql.data.method.annotation.QueryMapping
@@ -10,8 +11,9 @@ import java.util.UUID
 @Controller
 class RecipeController(
     val recipeRepository: RecipeRepository,
-    val ingredientRepository: IngredientRepository, // We need this to find "Flour"
-    val recipeIngredientRepository: RecipeIngredientRepository // We need this to save the link
+    val ingredientRepository: IngredientRepository,
+    val recipeIngredientRepository: RecipeIngredientRepository,
+    val userRepository: UserRepository
 ) {
 
     @QueryMapping
@@ -25,8 +27,10 @@ class RecipeController(
     }
 
     @MutationMapping
-    fun createRecipe(@Argument name: String, @Argument description: String?): Recipe {
-        val newRecipe = Recipe(name = name, description = description, isPublic = false)
+    fun createRecipe(@Argument name: String, @Argument description: String?, @Argument userId: UUID): Recipe {
+        val user = userRepository.findById(userId)
+            .orElseThrow { Exception("User not found") }
+        val newRecipe = Recipe(name = name, description = description, isPublic = false, user = user)
         return recipeRepository.save(newRecipe)
     }
 

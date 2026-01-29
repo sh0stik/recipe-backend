@@ -1,16 +1,29 @@
 type Query {
     recipes: [Recipe]!
     recipe(id: ID!): Recipe
-    # NEW: Ability to search the global ingredient database
     allIngredients: [Ingredient]!
 }
 
+type User {
+    id: ID!
+    username: String!
+    createdAt: String
+    updatedAt: String
+}
+
 type Mutation {
-    createRecipe(name: String!, description: String): Recipe!
-    # NEW: Create a global ingredient (e.g. "Flour")
+    createRecipe(name: String!, description: String, userId: ID!): Recipe!
     createIngredient(name: String!): Ingredient!
-    # Updated: Link an existing Ingredient ID to a Recipe with an amount
     addIngredientToRecipe(recipeId: ID!, ingredientId: ID!, amount: String!): Recipe!
+    createUser(username: String!): User!
+    createCategory(name: String!, parentCategoryId: ID): Category!
+    addCategoryToRecipe(recipeId: ID!, categoryId: ID!): Recipe!
+}
+
+type Category {
+    id: ID!
+    name: String!
+    parentCategory: Category
 }
 
 type Recipe {
@@ -18,19 +31,17 @@ type Recipe {
     name: String!
     description: String
     isPublic: Boolean
-    # Returns the list of ingredients WITH amounts
+    user: User!
     ingredients: [RecipeIngredient]
+    categories: [Category]
 }
 
-# This is the usage in a specific recipe
 type RecipeIngredient {
     id: ID!
     amount: String!
-    # The actual ingredient reference
     ingredient: Ingredient!
 }
 
-# This is the global reference item
 type Ingredient {
     id: ID!
     name: String!
