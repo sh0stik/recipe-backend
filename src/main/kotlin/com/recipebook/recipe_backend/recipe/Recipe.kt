@@ -19,6 +19,9 @@ data class Recipe(
 
     val isPublic: Boolean = false,
 
+    @Column(name = "is_trashed", nullable = false)
+    var isTrashed: Boolean= false,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
@@ -32,5 +35,13 @@ data class Recipe(
         joinColumns = [JoinColumn(name = "recipe_id")],
         inverseJoinColumns = [JoinColumn(name = "category_id")]
     )
-    val categories: MutableList<Category> = mutableListOf()
+    val categories: MutableList<Category> = mutableListOf(),
+
+@ManyToMany(fetch = FetchType.LAZY)
+@JoinTable(
+    name = "recipe_shared_users",
+    joinColumns = [JoinColumn(name = "recipe_id")],
+    inverseJoinColumns = [JoinColumn(name = "user_id")]
+)
+val sharedWith: MutableList<User> = mutableListOf()
 )

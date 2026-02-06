@@ -2,6 +2,9 @@ type Query {
     recipes: [Recipe]!
     recipe(id: ID!): Recipe
     allIngredients: [Ingredient]!
+    allCategories: [Category]!
+    users: [User]!
+    searchRecipes(keyword: String, categoryId: ID): [Recipe]!
 }
 
 type User {
@@ -18,6 +21,8 @@ type Mutation {
     createUser(username: String!): User!
     createCategory(name: String!, parentCategoryId: ID): Category!
     addCategoryToRecipe(recipeId: ID!, categoryId: ID!): Recipe!
+    moveToTrash(recipeId: ID!): Recipe!
+    restoreFromTrash(recipeId: ID!): Recipe!
 }
 
 type Category {
@@ -34,6 +39,7 @@ type Recipe {
     user: User!
     ingredients: [RecipeIngredient]
     categories: [Category]
+    isTrashed: Boolean
 }
 
 type RecipeIngredient {

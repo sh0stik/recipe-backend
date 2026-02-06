@@ -17,4 +17,9 @@ class UserController (val userRepository: UserRepository) {
     fun user(@Argument id: UUID): User? {
         return userRepository.findById(id).orElse(null)
     }
+
+    @QueryMapping
+    fun users(): List<User>{
+        return userRepository.findAll()
+    }
 }
