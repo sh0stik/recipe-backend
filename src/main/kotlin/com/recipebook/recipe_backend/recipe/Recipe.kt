@@ -1,6 +1,7 @@
 package com.recipebook.recipe_backend.recipe
 
 import com.recipebook.recipe_backend.category.Category
+import com.recipebook.recipe_backend.note.RecipeNote
 import com.recipebook.recipe_backend.user.User
 import jakarta.persistence.*
 import java.util.UUID
@@ -37,11 +38,14 @@ data class Recipe(
     )
     val categories: MutableList<Category> = mutableListOf(),
 
-@ManyToMany(fetch = FetchType.LAZY)
-@JoinTable(
-    name = "recipe_shared_users",
-    joinColumns = [JoinColumn(name = "recipe_id")],
-    inverseJoinColumns = [JoinColumn(name = "user_id")]
-)
-val sharedWith: MutableList<User> = mutableListOf()
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "recipe_shared_users",
+        joinColumns = [JoinColumn(name = "recipe_id")],
+        inverseJoinColumns = [JoinColumn(name = "user_id")]
+    )
+    val sharedWith: MutableList<User> = mutableListOf(),
+
+    @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val notes: MutableList<RecipeNote> = mutableListOf()
 )

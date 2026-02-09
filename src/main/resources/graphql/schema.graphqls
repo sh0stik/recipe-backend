@@ -23,6 +23,7 @@ type Mutation {
     addCategoryToRecipe(recipeId: ID!, categoryId: ID!): Recipe!
     moveToTrash(recipeId: ID!): Recipe!
     restoreFromTrash(recipeId: ID!): Recipe!
+    addNote(recipeId: ID!, userId: ID!, note: String!): RecipeNote!
 }
 
 type Category {
@@ -40,6 +41,7 @@ type Recipe {
     ingredients: [RecipeIngredient]
     categories: [Category]
     isTrashed: Boolean
+    notes: [RecipeNote]
 }
 
 type RecipeIngredient {
@@ -51,4 +53,9 @@ type RecipeIngredient {
 type Ingredient {
     id: ID!
     name: String!
+}
+type RecipeNote {
+    id: ID!
+    note: String!
+    user: User!
 }
