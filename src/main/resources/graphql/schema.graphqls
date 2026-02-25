@@ -18,7 +18,7 @@ type Mutation {
     createRecipe(name: String!, description: String, userId: ID!): Recipe!
     createIngredient(name: String!): Ingredient!
     addIngredientToRecipe(recipeId: ID!, ingredientId: ID!, amount: String!): Recipe!
-    createUser(username: String!): User!
+    createUser(username: String!, email: String!, password: String!): String!
     createCategory(name: String!, parentCategoryId: ID): Category!
     addCategoryToRecipe(recipeId: ID!, categoryId: ID!): Recipe!
     moveToTrash(recipeId: ID!): Recipe!
