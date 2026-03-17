@@ -14,7 +14,7 @@ data class User (@Id
                  val id: UUID? = null,
 
                  @Column(nullable = false, unique = true)
-                 val username: String,
+                 var username: String,
 
                  @Column(unique = true, nullable = false)
                  val email: String,

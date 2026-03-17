@@ -10,20 +10,34 @@ type Query {
 type User {
     id: ID!
     username: String!
+    email: String!
     createdAt: String
     updatedAt: String
 }
 
 type Mutation {
-    createRecipe(name: String!, description: String, userId: ID!): Recipe!
-    createIngredient(name: String!): Ingredient!
-    addIngredientToRecipe(recipeId: ID!, ingredientId: ID!, amount: String!): Recipe!
+    #Recipes
+    createRecipe(name: String!, description: String): Recipe!
+    createIngredient(name: String!, caloriesPer100g: Float!, proteinPer100g: Float!, fatPer100g: Float!, carbsPer100g: Float!): Ingredient!
+    addIngredientToRecipe(recipeId: ID!, ingredientId: ID!, quantity: Float!): Recipe!
+    updateRecipe(recipeId: ID!, name: String, description: String, isPublic: Boolean): Recipe!
+    removeIngredientFromRecipe(recipeId: ID!, ingredientId: ID!): Recipe!
+    removeCategoryFromRecipe(recipeId: ID!, categoryId: ID!): Recipe!
+    #Users
     createUser(username: String!, email: String!, password: String!): String!
+    login(username: String!, password: String!): String!
+    requestPasswordReset(email: String!): Boolean!
+    resetPassword(token: String!, newPassword: String!): Boolean!
+    logout: Boolean!
+    updateUsername(newUsername: String!): User!
+    #Categories
     createCategory(name: String!, parentCategoryId: ID): Category!
     addCategoryToRecipe(recipeId: ID!, categoryId: ID!): Recipe!
+    #Trash
     moveToTrash(recipeId: ID!): Recipe!
     restoreFromTrash(recipeId: ID!): Recipe!
-    addNote(recipeId: ID!, userId: ID!, note: String!): RecipeNote!
+    #Notes
+    addNote(recipeId: ID!, note: String!): RecipeNote!
 }
 
 type Category {
@@ -37,25 +51,35 @@ type Recipe {
     name: String!
     description: String
     isPublic: Boolean
+    isTrashed: Boolean
+    copiedFromId: ID
+    createdAt: String
+    updatedAt: String
     user: User!
     ingredients: [RecipeIngredient]
     categories: [Category]
-    isTrashed: Boolean
+    sharedWith: [User]
     notes: [RecipeNote]
 }
 
 type RecipeIngredient {
     id: ID!
-    amount: String!
+    quantity: Float!
     ingredient: Ingredient!
 }
 
 type Ingredient {
     id: ID!
     name: String!
+    caloriesPer100g: Float!
+    proteinPer100g: Float!
+    fatPer100g: Float!
+    carbsPer100g: Float!
 }
+
 type RecipeNote {
     id: ID!
     note: String!
+    createdAt: String
     user: User!
 }

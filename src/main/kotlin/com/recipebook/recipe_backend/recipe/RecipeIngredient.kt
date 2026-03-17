@@ -11,7 +11,8 @@ data class RecipeIngredient(
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
 
-    val amount: String,
+    @Column(nullable = false)
+    val quantity: Float,
 
     @ManyToOne
     @JoinColumn(name = "ingredient_id")

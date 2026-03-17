@@ -43,7 +43,7 @@ class JwtService {
         return extractExpiration(token).before(Date())
     }
 
-    private fun extractExpiration(token: String): Date {
+    fun extractExpiration(token: String): Date {
         return extractClaim(token, Claims::getExpiration)
     }
 

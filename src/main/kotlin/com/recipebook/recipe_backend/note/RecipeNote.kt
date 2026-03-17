@@ -11,6 +11,8 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.hibernate.annotations.CreationTimestamp
+import java.time.Instant
 import java.util.UUID
 
 @Entity
@@ -22,6 +24,10 @@ class RecipeNote (
 
     @Column(nullable = false, columnDefinition = "TEXT")
     val note: String,
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    val createdAt: Instant? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", nullable = false)

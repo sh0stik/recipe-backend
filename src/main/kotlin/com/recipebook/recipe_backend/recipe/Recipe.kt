@@ -4,6 +4,9 @@ import com.recipebook.recipe_backend.category.Category
 import com.recipebook.recipe_backend.note.RecipeNote
 import com.recipebook.recipe_backend.user.User
 import jakarta.persistence.*
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.Instant
 import java.util.UUID
 
 @Entity
@@ -13,15 +16,27 @@ data class Recipe(
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
 
-    val name: String,
+    @Column(nullable = false, columnDefinition = "TEXT")
+    var name: String,
 
     @Column(columnDefinition = "TEXT")
-    val description: String? = null,
+    var description: String? = null,
 
-    val isPublic: Boolean = false,
+    var isPublic: Boolean = false,
 
     @Column(name = "is_trashed", nullable = false)
-    var isTrashed: Boolean= false,
+    var isTrashed: Boolean = false,
+
+    @Column(name = "copied_from_id")
+    val copiedFromId: UUID? = null,
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    val createdAt: Instant? = null,
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    val updatedAt: Instant? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
