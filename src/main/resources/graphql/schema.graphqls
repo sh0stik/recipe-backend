@@ -60,6 +60,7 @@ type Recipe {
     categories: [Category]
     sharedWith: [User]
     notes: [RecipeNote]
+    nutrition: NutritionInfo
 }
 
 type RecipeIngredient {
@@ -75,6 +76,14 @@ type Ingredient {
     proteinPer100g: Float!
     fatPer100g: Float!
     carbsPer100g: Float!
+}
+
+type NutritionInfo {
+    caloriesPer100g: Float!
+    proteinPer100g: Float!
+    fatPer100g: Float!
+    carbsPer100g: Float!
+    totalWeight: Float!
 }
 
 type RecipeNote {
